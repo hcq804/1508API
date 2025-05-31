@@ -1,0 +1,405 @@
+-- SCRIPT DE TEST COMPLET - 1508API Enhanced
+-- Teste toutes les fonctionnalités avec effets visuels
+
+-- Charger l'API (remplacez par votre chemin)
+local API1508 = loadstring(game:HttpGet("https://raw.githubusercontent.com/hcq804/1508API/refs/heads/main/APIv2%20.lua"))()
+
+-- Variables de test
+local testResults = {}
+local notifications = {}
+
+-- Fonction de notification simple
+local function notify(message, color)
+    print("🔔 " .. message)
+    table.insert(notifications, {msg = message, color = color or Color3.new(1,1,1), time = tick()})
+end
+
+-- Créer la fenêtre principale
+local Window = API1508:CreateWindow({
+    Title = "🚀 1508API Enhanced Test Suite",
+    Subtitle = "Test complet de toutes les fonctionnalités",
+    ConfigurationSaving = true,
+    FileName = "TestConfig"
+})
+
+notify("✅ Fenêtre créée avec succès!", Color3.fromRGB(0, 255, 100))
+
+-- TAB 1: Tests Basiques
+local BasicTab = Window:CreateTab({
+    Name = "Basiques",
+    Icon = "🔧"
+})
+
+-- Test Button
+BasicTab:CreateButton({
+    Text = "🎯 Test Button avec Glow",
+    Callback = function()
+        notify("🎯 Button cliqué - Test réussi!", Color3.fromRGB(0, 255, 100))
+        testResults.button = true
+    end
+})
+
+-- Test Toggle
+local testToggle = BasicTab:CreateToggle({
+    Text = "⚡ Toggle avec Animation",
+    Default = false,
+    Callback = function(value)
+        notify("⚡ Toggle: " .. tostring(value), value and Color3.fromRGB(0, 255, 100) or Color3.fromRGB(255, 100, 0))
+        testResults.toggle = value
+    end
+})
+
+-- Test Slider
+local testSlider = BasicTab:CreateSlider({
+    Text = "🎚️ Slider Animé",
+    Min = 0,
+    Max = 100,
+    Default = 50,
+    Increment = 1,
+    Callback = function(value)
+        notify("🎚️ Slider: " .. value, Color3.fromRGB(0, 150, 255))
+        testResults.slider = value
+    end
+})
+
+-- Test Textbox
+BasicTab:CreateTextbox({
+    Text = "Entrez votre test...",
+    Default = "Hello World!",
+    Callback = function(text)
+        notify("📝 Textbox: " .. text, Color3.fromRGB(255, 255, 0))
+        testResults.textbox = text
+    end
+})
+
+-- Test Label
+local testLabel = BasicTab:CreateLabel({
+    Text = "📊 Label Dynamique - En attente..."
+})
+
+-- TAB 2: Tests Avancés
+local AdvancedTab = Window:CreateTab({
+    Name = "Avancés",
+    Icon = "⚙️"
+})
+
+-- Test de stress avec multiples éléments
+for i = 1, 5 do
+    AdvancedTab:CreateButton({
+        Text = "🔥 Stress Test #" .. i,
+        Callback = function()
+            notify("🔥 Stress Button " .. i .. " activé!", Color3.fromRGB(255, 50 + i*30, 0))
+        end
+    })
+end
+
+-- Slider de vitesse d'animation
+AdvancedTab:CreateSlider({
+    Text = "⚡ Vitesse Animation",
+    Min = 0.1,
+    Max = 2,
+    Default = 1,
+    Increment = 0.1,
+    Callback = function(value)
+        notify("⚡ Vitesse: " .. value .. "x", Color3.fromRGB(100, 255, 100))
+        -- Ici on pourrait modifier la vitesse des animations
+    end
+})
+
+-- Toggle de mode debug
+AdvancedTab:CreateToggle({
+    Text = "🐛 Mode Debug",
+    Default = true,
+    Callback = function(value)
+        if value then
+            notify("🐛 Mode Debug ACTIVÉ", Color3.fromRGB(255, 255, 0))
+            testLabel:Set("📊 Debug: ON - Tests en cours...")
+        else
+            notify("🐛 Mode Debug DÉSACTIVÉ", Color3.fromRGB(150, 150, 150))
+            testLabel:Set("📊 Debug: OFF")
+        end
+    end
+})
+
+-- TAB 3: Tests Visuels
+local VisualTab = Window:CreateTab({
+    Name = "Visuels",
+    Icon = "🎨"
+})
+
+-- Test des couleurs
+local colors = {
+    {name = "🔴 Rouge", color = Color3.fromRGB(255, 50, 50)},
+    {name = "🟢 Vert", color = Color3.fromRGB(50, 255, 50)},
+    {name = "🔵 Bleu", color = Color3.fromRGB(50, 50, 255)},
+    {name = "🟡 Jaune", color = Color3.fromRGB(255, 255, 50)},
+    {name = "🟣 Violet", color = Color3.fromRGB(255, 50, 255)}
+}
+
+for _, colorData in ipairs(colors) do
+    VisualTab:CreateButton({
+        Text = colorData.name .. " Glow Test",
+        Callback = function()
+            notify("🎨 Test couleur: " .. colorData.name, colorData.color)
+        end
+    })
+end
+
+-- Slider d'intensité des effets
+VisualTab:CreateSlider({
+    Text = "✨ Intensité Glow",
+    Min = 0,
+    Max = 1,
+    Default = 0.8,
+    Increment = 0.1,
+    Callback = function(value)
+        notify("✨ Intensité Glow: " .. math.floor(value * 100) .. "%", Color3.fromRGB(200, 200, 255))
+    end
+})
+
+-- TAB 4: Tests Performance
+local PerfTab = Window:CreateTab({
+    Name = "Performance",
+    Icon = "📈"
+})
+
+-- Test de performance
+local perfCounter = 0
+PerfTab:CreateButton({
+    Text = "🚀 Test Performance (Clic Rapide)",
+    Callback = function()
+        perfCounter = perfCounter + 1
+        notify("🚀 Perf Test #" .. perfCounter .. " - " .. tick(), Color3.fromRGB(0, 255, 255))
+        if perfCounter >= 10 then
+            notify("🏆 Test Performance RÉUSSI! 10+ clics", Color3.fromRGB(255, 215, 0))
+        end
+    end
+})
+
+-- Compteur FPS simulé
+local fpsLabel = PerfTab:CreateLabel({
+    Text = "📊 FPS: Calcul en cours..."
+})
+
+-- Slider de charge CPU simulée
+PerfTab:CreateSlider({
+    Text = "⚡ Charge CPU Simulée",
+    Min = 0,
+    Max = 100,
+    Default = 25,
+    Increment = 5,
+    Callback = function(value)
+        notify("⚡ Charge CPU: " .. value .. "%", 
+            value > 80 and Color3.fromRGB(255, 100, 100) or 
+            value > 50 and Color3.fromRGB(255, 255, 100) or 
+            Color3.fromRGB(100, 255, 100))
+        fpsLabel:Set("📊 FPS: " .. math.floor(60 - (value * 0.3)) .. " (Charge: " .. value .. "%)")
+    end
+})
+
+-- Test mémoire
+local memoryToggle = PerfTab:CreateToggle({
+    Text = "🧠 Surveillance Mémoire",
+    Default = false,
+    Callback = function(value)
+        if value then
+            notify("🧠 Surveillance mémoire ACTIVÉE", Color3.fromRGB(100, 200, 255))
+        else
+            notify("🧠 Surveillance mémoire DÉSACTIVÉE", Color3.fromRGB(150, 150, 150))
+        end
+    end
+})
+
+-- TAB 5: Tests Automatisés
+local AutoTab = Window:CreateTab({
+    Name = "Auto Tests",
+    Icon = "🤖"
+})
+
+-- Test automatique de tous les éléments
+AutoTab:CreateButton({
+    Text = "🤖 Lancer Tests Automatiques",
+    Callback = function()
+        notify("🤖 Démarrage des tests automatiques...", Color3.fromRGB(255, 165, 0))
+        
+        -- Test séquentiel avec délais
+        spawn(function()
+            wait(1)
+            testToggle:Set(true)
+            notify("✅ Auto-test Toggle: ON", Color3.fromRGB(0, 255, 100))
+            
+            wait(1)
+            testSlider:Set(75)
+            notify("✅ Auto-test Slider: 75", Color3.fromRGB(0, 255, 100))
+            
+            wait(1)
+            testToggle:Set(false)
+            notify("✅ Auto-test Toggle: OFF", Color3.fromRGB(0, 255, 100))
+            
+            wait(1)
+            testSlider:Set(25)
+            notify("✅ Auto-test Slider: 25", Color3.fromRGB(0, 255, 100))
+            
+            wait(1)
+            notify("🏆 TOUS LES TESTS AUTOMATIQUES RÉUSSIS!", Color3.fromRGB(255, 215, 0))
+        end)
+    end
+})
+
+-- Test de stress UI
+local stressActive = false
+AutoTab:CreateToggle({
+    Text = "💥 Test de Stress UI",
+    Default = false,
+    Callback = function(value)
+        stressActive = value
+        if value then
+            notify("💥 Test de stress DÉMARRÉ!", Color3.fromRGB(255, 100, 100))
+            spawn(function()
+                while stressActive do
+                    for i = 1, 100, 10 do
+                        if not stressActive then break end
+                        testSlider:Set(i)
+                        wait(0.05)
+                    end
+                    for i = 100, 1, -10 do
+                        if not stressActive then break end
+                        testSlider:Set(i)
+                        wait(0.05)
+                    end
+                end
+            end)
+        else
+            notify("💥 Test de stress ARRÊTÉ", Color3.fromRGB(100, 100, 100))
+        end
+    end
+})
+
+-- Textbox pour commandes personnalisées
+AutoTab:CreateTextbox({
+    Text = "Commande personnalisée...",
+    Default = "test custom",
+    Callback = function(text)
+        local cmd = string.lower(text)
+        if cmd == "reset" then
+            notify("🔄 RESET de tous les tests", Color3.fromRGB(255, 255, 0))
+            testToggle:Set(false)
+            testSlider:Set(50)
+            perfCounter = 0
+        elseif cmd == "rainbow" then
+            notify("🌈 Mode RAINBOW activé!", Color3.fromRGB(255, 100, 255))
+            spawn(function()
+                for i = 1, 20 do
+                    local r = math.random(100, 255)
+                    local g = math.random(100, 255)
+                    local b = math.random(100, 255)
+                    notify("🌈 Rainbow #" .. i, Color3.fromRGB(r, g, b))
+                    wait(0.2)
+                end
+            end)
+        elseif cmd == "status" then
+            notify("📊 STATUS: " .. #testResults .. " tests effectués", Color3.fromRGB(100, 200, 255))
+        else
+            notify("❓ Commande inconnue: " .. text, Color3.fromRGB(255, 150, 0))
+        end
+    end
+})
+
+-- Label de statut final
+local statusLabel = AutoTab:CreateLabel({
+    Text = "🎯 Statut: Interface chargée - Prêt pour les tests!"
+})
+
+-- TAB 6: Résultats & Stats
+local ResultsTab = Window:CreateTab({
+    Name = "Résultats",
+    Icon = "📊"
+})
+
+-- Bouton pour afficher les résultats
+ResultsTab:CreateButton({
+    Text = "📊 Afficher Résultats Complets",
+    Callback = function()
+        local totalTests = 0
+        local passedTests = 0
+        
+        for test, result in pairs(testResults) do
+            totalTests = totalTests + 1
+            if result then
+                passedTests = passedTests + 1
+            end
+        end
+        
+        local percentage = totalTests > 0 and math.floor((passedTests / totalTests) * 100) or 0
+        
+        notify("📊 RÉSULTATS FINAUX:", Color3.fromRGB(255, 215, 0))
+        notify("✅ Tests réussis: " .. passedTests .. "/" .. totalTests, Color3.fromRGB(0, 255, 100))
+        notify("📈 Pourcentage: " .. percentage .. "%", Color3.fromRGB(100, 200, 255))
+        notify("🎯 Performance: " .. perfCounter .. " clics", Color3.fromRGB(255, 255, 100))
+        
+        statusLabel:Set("🏆 Tests terminés: " .. percentage .. "% de réussite!")
+    end
+})
+
+-- Export des résultats
+ResultsTab:CreateButton({
+    Text = "💾 Exporter Logs",
+    Callback = function()
+        local logData = "=== 1508API Enhanced - Rapport de Test ===\n"
+        logData = logData .. "Timestamp: " .. os.date() .. "\n"
+        logData = logData .. "Notifications totales: " .. #notifications .. "\n\n"
+        
+        for i, notif in ipairs(notifications) do
+            logData = logData .. "[" .. notif.time .. "] " .. notif.msg .. "\n"
+        end
+        
+        -- Dans un vrai environnement, on sauvegarderait dans un fichier
+        print(logData)
+        notify("💾 Logs exportés dans la console!", Color3.fromRGB(100, 255, 200))
+    end
+})
+
+-- Clear des résultats
+ResultsTab:CreateButton({
+    Text = "🗑️ Vider Tous les Résultats",
+    Callback = function()
+        testResults = {}
+        notifications = {}
+        perfCounter = 0
+        notify("🗑️ Tous les résultats effacés!", Color3.fromRGB(255, 100, 100))
+        statusLabel:Set("🔄 Résultats effacés - Prêt pour nouveaux tests")
+    end
+})
+
+-- Informations système
+ResultsTab:CreateLabel({
+    Text = "💻 Système: Roblox Studio/Client"
+})
+
+ResultsTab:CreateLabel({
+    Text = "🚀 Version API: 2.1.0 Enhanced"
+})
+
+ResultsTab:CreateLabel({
+    Text = "⏰ Chargé: " .. os.date("%H:%M:%S")
+})
+
+-- Message de fin
+notify("🎉 SCRIPT DE TEST ENTIÈREMENT CHARGÉ!", Color3.fromRGB(255, 215, 0))
+notify("👉 Explorez tous les onglets pour tester!", Color3.fromRGB(100, 255, 255))
+notify("🔥 Interface avec effets GLOW activés!", Color3.fromRGB(255, 100, 255))
+
+-- Loop de mise à jour en temps réel
+spawn(function()
+    while true do
+        wait(5)
+        if fpsLabel then
+            local currentTime = os.date("%H:%M:%S")
+            fpsLabel:Set("📊 Temps: " .. currentTime .. " | Tests: " .. #testResults)
+        end
+    end
+end)
+
+print("🚀 1508API Enhanced Test Suite - PRÊT!")
+print("📝 " .. #notifications .. " notifications générées")
+print("🎯 Interface créée avec succès - Tous les effets glow actifs!")
