@@ -47,7 +47,7 @@ function _G.Main:New(Title)
 	TitleLabel.BorderSizePixel = 0
 	TitleLabel.Position = UDim2.new(0.017896574, 0, 0.255133092, 0)
 	TitleLabel.Size = UDim2.new(0, 239, 0, 30)
-	TitleLabel.Font = Enum.Font.Inconsolata.Light
+	TitleLabel.Font = Enum.Font.Code
 	TitleLabel.Text = Title
 	TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 	TitleLabel.TextScaled = true
@@ -183,7 +183,7 @@ function _G.Main:New(Title)
 		ButtonLabel.BorderSizePixel = 0
 		ButtonLabel.Position = UDim2.new(0.0932103842, 0, 0.429160535, 0)
 		ButtonLabel.Size = UDim2.new(0, 192, 0, 32)
-		ButtonLabel.Font = Enum.Font.Inconsolata.Light
+		ButtonLabel.Font = Enum.Font.Code
 		ButtonLabel.Text = Name
 		ButtonLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 		ButtonLabel.TextScaled = true
