@@ -144,7 +144,7 @@ function _G.Window:New(Title)
 		local startPos
 
 		local targetPosition
-		local smoothSpeed = 0.07
+		local smoothSpeed = 0.1
 
 		local function update(input)
 			local delta = input.Position - dragStart
